@@ -25,3 +25,22 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .flip-card {
+    perspective: 1000px;
+  }
+  .flip-card-inner {
+    transform-style: preserve-3d;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+  .flip-card-front,
+  .flip-card-back {
+    backface-visibility: hidden;
+  }
+  .flip-card-back {
+    transform: rotateY(180deg);
+  }
+}
