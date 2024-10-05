@@ -16,6 +16,7 @@ import {
   countItemsForFilter,
 } from './SearchLogic'
 import FilterGroup from '../components/FilterGroup/FilterGroup'
+import { Item } from '../types/types'
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('')

@@ -32,8 +32,10 @@ export const handleFilterChange =
     setter((prev) => (prev === value ? null : value))
   }
 
+import { Item } from '../types/types'
+
 export const countItemsForFilter = (
-  items: any[],
+  items: Item[],
   filterType: string,
   option: string,
   currentFilters: {
