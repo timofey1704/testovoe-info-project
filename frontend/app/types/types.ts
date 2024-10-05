@@ -3,4 +3,5 @@ export interface FilterGroupProps {
   options: string[]
   selectedOption: string | null
   onChange: (option: string) => void
+  disabledOptions: string[]
 }

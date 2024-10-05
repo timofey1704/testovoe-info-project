@@ -13,6 +13,7 @@ import {
   isPriceInRange,
   isQuantityInRange,
   handleFilterChange,
+  countItemsForFilter,
 } from './SearchLogic'
 import FilterGroup from '../components/FilterGroup/FilterGroup'
 
@@ -28,6 +29,46 @@ const SearchPage = () => {
   >(null)
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [disabledCategories, setDisabledCategories] = useState<string[]>([])
+  const [disabledPriceRanges, setDisabledPriceRanges] = useState<string[]>([])
+  const [disabledQuantityRanges, setDisabledQuantityRanges] = useState<
+    string[]
+  >([])
+  const [disabledColors, setDisabledColors] = useState<string[]>([])
+
+  const updateDisabledOptions = () => {
+    const currentFilters = {
+      category: selectedCategory,
+      priceRange: selectedPriceRange,
+      quantityRange: selectedQuantityRange,
+      color: selectedColor,
+    }
+
+    setDisabledCategories(
+      categories.filter(
+        (cat) =>
+          countItemsForFilter(items, 'category', cat, currentFilters) === 0
+      )
+    )
+    setDisabledPriceRanges(
+      priceRanges.filter(
+        (range) =>
+          countItemsForFilter(items, 'price', range, currentFilters) === 0
+      )
+    )
+    setDisabledQuantityRanges(
+      quantityRanges.filter(
+        (range) =>
+          countItemsForFilter(items, 'quantity', range, currentFilters) === 0
+      )
+    )
+    setDisabledColors(
+      colors.filter(
+        (color) =>
+          countItemsForFilter(items, 'color', color, currentFilters) === 0
+      )
+    )
+  }
 
   useEffect(() => {
     const results = items.filter((item) => {
@@ -51,6 +92,7 @@ const SearchPage = () => {
       )
     })
     setFilteredItems(results)
+    updateDisabledOptions()
   }, [
     searchTerm,
     selectedCategory,
@@ -96,24 +138,28 @@ const SearchPage = () => {
             options={categories}
             selectedOption={selectedCategory}
             onChange={handleFilterChange(setSelectedCategory)}
+            disabledOptions={disabledCategories}
           />
           <FilterGroup
             title="Цена"
             options={priceRanges}
             selectedOption={selectedPriceRange}
             onChange={handleFilterChange(setSelectedPriceRange)}
+            disabledOptions={disabledPriceRanges}
           />
           <FilterGroup
             title="Количество"
             options={quantityRanges}
             selectedOption={selectedQuantityRange}
             onChange={handleFilterChange(setSelectedQuantityRange)}
+            disabledOptions={disabledQuantityRanges}
           />
           <FilterGroup
             title="Цвет"
             options={colors}
             selectedOption={selectedColor}
             onChange={handleFilterChange(setSelectedColor)}
+            disabledOptions={disabledColors}
           />
         </div>
       )}

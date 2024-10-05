@@ -31,3 +31,42 @@ export const handleFilterChange =
   (value: string) => {
     setter((prev) => (prev === value ? null : value))
   }
+
+export const countItemsForFilter = (
+  items: any[],
+  filterType: string,
+  option: string,
+  currentFilters: {
+    category: string | null
+    priceRange: string | null
+    quantityRange: string | null
+    color: string | null
+  }
+) => {
+  return items.filter((item) => {
+    const matchesCategory =
+      !currentFilters.category || item.title.includes(currentFilters.category)
+    const matchesPriceRange =
+      !currentFilters.priceRange ||
+      isPriceInRange(item.price, currentFilters.priceRange)
+    const matchesQuantityRange =
+      !currentFilters.quantityRange ||
+      isQuantityInRange(item.quantity, currentFilters.quantityRange)
+    const matchesColor =
+      !currentFilters.color || item.color === currentFilters.color
+
+    const matchesCurrentFilter =
+      (filterType === 'category' && item.title.includes(option)) ||
+      (filterType === 'price' && isPriceInRange(item.price, option)) ||
+      (filterType === 'quantity' && isQuantityInRange(item.quantity, option)) ||
+      (filterType === 'color' && item.color === option)
+
+    return (
+      matchesCategory &&
+      matchesPriceRange &&
+      matchesQuantityRange &&
+      matchesColor &&
+      matchesCurrentFilter
+    )
+  }).length
+}

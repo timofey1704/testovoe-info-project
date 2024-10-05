@@ -6,11 +6,14 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
   options,
   selectedOption,
   onChange,
+  disabledOptions,
 }) => (
   <div className="flex flex-col">
     <h3 className="text-white mb-2">{title}</h3>
     {options.map((option) => {
-      const isDisabled = !!(selectedOption && selectedOption !== option)
+      const isDisabled =
+        disabledOptions.includes(option) ||
+        !!(selectedOption && selectedOption !== option)
       return (
         <label key={option} className="flex items-center mb-1">
           <input
